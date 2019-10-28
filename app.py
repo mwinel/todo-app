@@ -5,17 +5,18 @@ import sys
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:123456@localhost:5432/todoapp'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 class Todo(db.Model):
-  __tablename__ = 'todos'
-  id = db.Column(db.Integer, primary_key=True)
-  description = db.Column(db.String(), nullable=False)
-  completed = db.Column(db.Boolean, nullable=False, default=False)
+    __tablename__ = 'todos'
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(), nullable=False)
+    completed = db.Column(db.Boolean, nullable=False, default=False)
 
-  def __repr__(self):
-    return f'<Todo {self.id} {self.description}>'
+    def __repr__(self):
+        return f'<Todo {self.id} {self.description}>'
 
 @app.route("/todos/create", methods=['POST'])
 def create_todo():
@@ -38,10 +39,10 @@ def create_todo():
     else:
         return jsonify(body)
 
-@app.route("/todos/<todo_id>/set-completed", methods=["POST"])
+@app.route("/todos/<todo_id>/set-completed", methods=["PUT"])
 def set_completed_todo(todo_id):
     try:
-        completed = requst.get_json()["completed"]
+        completed = request.get_json()["completed"]
         todo = Todo.query.get(todo_id)
         todo.completed = completed
         db.session.commit()
@@ -51,6 +52,19 @@ def set_completed_todo(todo_id):
         db.session.close()
     return redirect(url_for("index"))
 
+@app.route("/todos/<todo_id>", methods=["DELETE"])
+def delete_todo(todo_id):
+    try:
+        Todo.query.filter_by(id=todo_id).delete()
+        db.session.commit()
+    except:
+        db.session.rollback
+    finally:
+        db.session.close()
+    return jsonify({
+        "success": True
+    })
+
 @app.route("/")
 def index():
-    return render_template('index.html', data=Todo.query.all())
+    return render_template('index.html', todos=Todo.query.all())
