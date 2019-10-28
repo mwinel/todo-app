@@ -1,4 +1,5 @@
 # todo-app
+
 Just a simple todo app.
 
 ## Technologies
@@ -9,6 +10,8 @@ Just a simple todo app.
 - [SQLAlchemy](https://www.sqlalchemy.org/)
 - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 - [psycopg2](http://initd.org/psycopg/)
+- [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/#)
+- [alembic](https://alembic.sqlalchemy.org/en/latest/)
 
 ## Installation
 
@@ -27,6 +30,23 @@ Run the command below to start the app.
 export FLASK_APP=app
 export FLASK_DEBUG=True
 flask run
+```
+
+## Running migrations
+
+Use the following commands to run database migrations to add tables or columns.
+
+```
+flask db init
+flask db migrate
+flask db upgrade
+```
+
+In order to drop a table or column.
+
+```
+...
+flask db downgrade
 ```
 
 ## Contributing

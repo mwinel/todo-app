@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 import sys
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:123456@localhost:5432/todos'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:123456@localhost:5432/todoapp'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -12,11 +12,10 @@ class Todo(db.Model):
   __tablename__ = 'todos'
   id = db.Column(db.Integer, primary_key=True)
   description = db.Column(db.String(), nullable=False)
+  completed = db.Column(db.Boolean, nullable=False, default=False)
 
   def __repr__(self):
     return f'<Todo {self.id} {self.description}>'
-
-db.create_all()
 
 @app.route("/todos/create", methods=['POST'])
 def create_todo():
