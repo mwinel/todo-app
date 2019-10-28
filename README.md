@@ -14,8 +14,8 @@ Just a simple todo app.
 
 ```
 git clone https://github.com/mwinel/todo-app.git
-virtualenv venv
-source venv/bin/activate
+python -m venv venv
+source venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
@@ -24,8 +24,8 @@ pip install -r requirements.txt
 Run the command below to start the app.
 
 ```
-FLASK_APP=app
-FLASK_DEBUG=True
+export FLASK_APP=app
+export FLASK_DEBUG=True
 flask run
 ```
 
