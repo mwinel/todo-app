@@ -4,9 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>Todo App</title>
   </head>
   <body>
-    todo-app
+    <form method="post" action="/todos/create">
+      <input type="text" name="description" />
+      <input type="submit" value="Create" />
+    </form>
+    <ul>
+      {% for d in data %}
+      <li>{{ d.description }}</li>
+      {% endfor %}
+    </ul>
   </body>
 </html>
